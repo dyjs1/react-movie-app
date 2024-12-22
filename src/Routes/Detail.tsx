@@ -61,35 +61,59 @@ function Detail() {
     queryKey: ["detail", id],
     queryFn: () => getMovieDetail(Number(id)),
   });
-
+  console.log(data);
   if (isLoading) return <Loading>Loading...</Loading>;
 
   if (!data) return <NoData>No data found.</NoData>;
 
   return (
     <Container>
-      <Background>
-        <BackgroundImage
-          src={`https://image.tmdb.org/t/p/w1280${data.backdrop_path}`}
-          alt={data.title}
-        />
-      </Background>
-      <Content>
-        <Poster
-          src={`https://image.tmdb.org/t/p/w500${data.poster_path}`}
-          alt={data.title}
-        />
-        <Details>
-          <Title>{data.title}</Title>
-          <Tagline>{data.tagline}</Tagline>
-          <Overview>{data.overview}</Overview>
-          <ReleaseDate>Release Date: {data.release_date}</ReleaseDate>
-          <Genres>
-            Genres: {data.genres.map((genre) => genre.name).join(", ")}
-          </Genres>
-          <VoteAverage>Rating: {data.vote_average}/10</VoteAverage>
-        </Details>
-      </Content>
+      <VideoContainer>
+        <iframe
+          width='900'
+          height='450'
+          src='https://www.youtube.com/embed/7XfnlcnJo4k'
+          title='Movie Trailer'
+          allow='accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture'
+          allowFullScreen
+        ></iframe>
+      </VideoContainer>
+      <div>
+        <Title>{data.title}</Title>
+        <Content>
+          <Text level='medium'>평균 {data.vote_average.toFixed(1)}</Text>
+          <Text>·</Text>
+          <Text>{data.release_date.split("-")[0]}</Text>
+          <Text>·</Text>
+          <Text>{data.runtime}분</Text>
+          <Text>·</Text>
+          <Text>{data.genres.map((genre) => genre.name).join(" · ")}</Text>
+        </Content>
+      </div>
+      <ContentConatiner>
+        <Background>
+          <BackgroundImage
+            src={`https://image.tmdb.org/t/p/w1280${data.backdrop_path}`}
+            alt={data.title}
+          />
+        </Background>
+        <Content>
+          <Poster
+            src={`https://image.tmdb.org/t/p/w500${data.poster_path}`}
+            alt={data.title}
+          />
+          <Details>
+            <Title>{data.title}</Title>
+            <Tagline>{data.tagline}</Tagline>
+            <Overview>{data.overview}</Overview>
+            <ReleaseDate>Release Date: {data.release_date}</ReleaseDate>
+            <Genres>
+              Genres: {data.genres.map((genre) => genre.name).join(", ")}
+            </Genres>
+            <VoteAverage>Rating: {data.vote_average}/10</VoteAverage>
+          </Details>
+        </Content>
+      </ContentConatiner>
     </Container>
   );
 }
@@ -101,6 +125,9 @@ const Container = styled.div`
   min-height: 100vh;
   margin-top: 100px;
   margin-left: 100px;
+`;
+
+const ContentConatiner = styled.div`
   display: flex;
   justify-content: center;
 `;
@@ -125,7 +152,6 @@ const BackgroundImage = styled.img`
 const Content = styled.div`
   display: flex;
   align-items: flex-start;
-  padding: 20px;
 `;
 
 const Poster = styled.img`
@@ -177,6 +203,26 @@ const NoData = styled.div`
   color: #fff;
   text-align: center;
   margin-top: 50px;
+`;
+
+const VideoContainer = styled.div`
+  display: flex;
+  justify-content: center;
+  margin-top: 20px;
+`;
+interface TextProps {
+  level?: "high" | "medium" | "low"; // level은 선택적 속성
+}
+const Text = styled.h1<TextProps>`
+  font-weight: ${(props) => {
+    if (props.level === "high") return "900";
+    if (props.level === "medium") return "600";
+    return "400";
+  }};
+  font-size: 1rem;
+  color: #fff;
+  margin: 10px 0;
+  margin-right: 5px;
 `;
 
 export default Detail;

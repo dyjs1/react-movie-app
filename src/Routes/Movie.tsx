@@ -1,16 +1,15 @@
-import { useQuery } from 'react-query';
-import { IGetMoviesResult } from './Home';
-import { getMovies } from '../api';
-import { styled } from 'styled-components';
-import { makeImagePath } from '../utils';
+import { useQuery } from "react-query";
+import { IGetMoviesResult } from "./Home";
+import { getMovies } from "../api";
+import { styled } from "styled-components";
+import { makeImagePath } from "../utils";
 
 const Movie = () => {
   // 영화 데이터 가져오기
   const { data, isLoading } = useQuery<IGetMoviesResult>({
-    queryKey: ['movies', 'nowPlaying'],
+    queryKey: ["movies", "nowPlaying"],
     queryFn: getMovies,
   });
-  console.log(data);
 
   return (
     <Container>
@@ -18,10 +17,10 @@ const Movie = () => {
         {data?.results?.map((movie, index) => (
           <>
             <GridItem key={index}>
-              {' '}
+              {" "}
               {/* key 추가 */}
               <img
-                src={makeImagePath(movie?.backdrop_path || '')}
+                src={makeImagePath(movie?.backdrop_path || "")}
                 alt={movie?.title}
               />
             </GridItem>
