@@ -11,6 +11,7 @@ const SearchContainer = styled.div`
   flex-direction: column;
   align-items: center;
   padding: 20px;
+  margin-bottom: 100px;
 `;
 
 const MoviesGrid = styled.div`
@@ -25,10 +26,11 @@ const MovieBox = styled(motion.div)`
   background-color: white;
   background-size: cover;
   background-position: center center;
-  width: 250px;
-  height: 350px;
+  width: 300px;
+  height: 400px;
   font-size: 66px;
   margin-bottom: 20px;
+  margin-top: 20px;
   cursor: pointer;
   &:first-child {
     transform-origin: center left;
@@ -40,7 +42,6 @@ const MovieBox = styled(motion.div)`
 
 const MovieImage = styled.img`
   max-width: 100%;
-  border-radius: 8px;
 `;
 const boxVariants = {
   normal: {
@@ -51,7 +52,7 @@ const boxVariants = {
     y: -80,
     transition: {
       delay: 0.3,
-      duaration: 0.1,
+      duaration: 0.9,
       type: "tween",
     },
   },
@@ -59,7 +60,6 @@ const boxVariants = {
 
 function Search() {
   const navigate = useNavigate();
-  const location = useLocation();
   const [searchParams, _] = useSearchParams();
   const keyword = searchParams.get("keyword") || "";
 
@@ -73,10 +73,8 @@ function Search() {
   }
   // 클릭 함수 핸들러
   const onBoxClicked = (movieId: number) => {
-    console.log("movieId", movieId);
     navigate(`/detail/${movieId}`);
   };
-  console.log(data);
   return (
     <SearchContainer>
       <h3>
@@ -87,8 +85,8 @@ function Search() {
           {data?.results.map((movie: any) => (
             <MovieBox
               layoutId={movie.id + ""}
-              whileHover='hover'
-              initial='normal'
+              whileHover="hover"
+              initial="normal"
               key={movie.id}
               onClick={() => onBoxClicked(movie.id)}
               variants={boxVariants}

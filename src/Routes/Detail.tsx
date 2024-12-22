@@ -101,6 +101,8 @@ const Container = styled.div`
   min-height: 100vh;
   margin-top: 100px;
   margin-left: 100px;
+  display: flex;
+  justify-content: center;
 `;
 
 const Background = styled.div`

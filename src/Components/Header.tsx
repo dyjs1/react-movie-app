@@ -61,6 +61,7 @@ const Search = styled.form`
     height: 25px;
   }
 `;
+
 const logoVariants = {
   normal: {
     fillOpacity: 1,
@@ -110,6 +111,7 @@ const navVariants = {
 function Header() {
   const homeMatch = useMatch("/");
   const tvMatch = useMatch("tv");
+  const movieMatch = useMatch("movie");
   const [searchOpen, setSearchOpen] = useState(false);
   const inputAnimation = useAnimation();
   const navAnimation = useAnimation();
@@ -170,6 +172,12 @@ function Header() {
               {tvMatch && <Circle layoutId='circle' />}
             </Link>
           </Item>
+          <Item>
+            <Link to='/movie'>
+              Mvoie
+              {movieMatch && <Circle layoutId='circle' />}
+            </Link>
+          </Item>
         </Items>
       </Col>
       <Col>
@@ -179,7 +187,7 @@ function Header() {
               toggleSearch();
               setFocus("keyword");
             }}
-            animate={{ x: searchOpen ? -185 : 0 }}
+            animate={{ x: searchOpen ? -190 : 0 }}
             transition={{ type: "linear" }}
             fill='currentColor'
             viewBox='0 0 20 20'

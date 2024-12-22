@@ -1,10 +1,10 @@
-import { useQuery } from "react-query";
-import { getGenres, getMovies } from "../api";
-import styled from "styled-components";
-import { makeImagePath } from "../utils";
-import { motion, AnimatePresence } from "framer-motion";
-import { useState } from "react";
-import { PathMatch, useMatch, useNavigate } from "react-router-dom";
+import { useQuery } from 'react-query';
+import { getGenres, getMovies } from '../api';
+import styled from 'styled-components';
+import { makeImagePath } from '../utils';
+import { motion, AnimatePresence } from 'framer-motion';
+import { useState } from 'react';
+import { PathMatch, useMatch, useNavigate } from 'react-router-dom';
 
 export interface IMovie {
   id: number;
@@ -27,7 +27,7 @@ export interface IGetMoviesResult {
   total_pages: number;
   total_results: number;
 }
-const Wrapper = styled.div`
+export const Wrapper = styled.div`
   background: black;
   padding-bottom: 200px;
 `;
@@ -124,7 +124,7 @@ const boxVariants = {
     transition: {
       delay: 0.5,
       duaration: 0.1,
-      type: "tween",
+      type: 'tween',
     },
   },
 };
@@ -135,7 +135,7 @@ const infoVariants = {
     transition: {
       delay: 0.5,
       duaration: 0.1,
-      type: "tween",
+      type: 'tween',
     },
   },
 };
@@ -181,7 +181,7 @@ const BigText = styled.div`
   }
 `;
 
-const BigTitle = styled(BigText).attrs({ as: "h3" })`
+const BigTitle = styled(BigText).attrs({ as: 'h3' })`
   font-size: 46px;
 
   @media (max-width: 768px) {
@@ -189,12 +189,16 @@ const BigTitle = styled(BigText).attrs({ as: "h3" })`
   }
 `;
 
-const BigOverview = styled(BigText).attrs({ as: "p" })`
+const BigOverview = styled(BigText).attrs({ as: 'p' })`
   font-size: 18px;
   /* 
   @media (max-width: 768px) {
     font-size: 14px;
   } */
+`;
+
+const DetailContainer = styled.div`
+  padding-right: 20px;
 `;
 
 const Container = styled.div`
@@ -213,7 +217,7 @@ const offset = 6;
 
 function Home() {
   const navigate = useNavigate();
-  const bigMovieMatch = useMatch("/movies/:movieId");
+  const bigMovieMatch = useMatch('/movies/:movieId');
 
   //슬라이더 인덱스 관리
   const [index, setIndex] = useState(0);
@@ -221,16 +225,16 @@ function Home() {
 
   //영화 데이터 가져오기
   const { data, isLoading } = useQuery<IGetMoviesResult>({
-    queryKey: ["movies", "nowPlaying"],
+    queryKey: ['movies', 'nowPlaying'],
     queryFn: getMovies,
   });
 
   //영화 장르 데이터 가져오기
   const { data: genreData } = useQuery({
-    queryKey: ["movies", "genres"],
+    queryKey: ['movies', 'genres'],
     queryFn: getGenres,
   });
-
+  console.log(data);
   // 슬라이더 증가 함수
   const incraseIndex = () => {
     if (data) {
@@ -251,13 +255,13 @@ function Home() {
 
   // 모달 닫기 핸들러
   const onOverlayClick = () => {
-    navigate("/");
+    navigate('/');
   };
 
   const clickedMovie =
     bigMovieMatch?.params.movieId &&
     data?.results.find(
-      (movie) => movie.id + "" === bigMovieMatch.params.movieId
+      (movie) => movie.id + '' === bigMovieMatch.params.movieId
     );
 
   return (
@@ -268,7 +272,7 @@ function Home() {
         <>
           <Banner
             onClick={incraseIndex}
-            bgPhoto={makeImagePath(data?.results[0].backdrop_path || "")}
+            bgPhoto={makeImagePath(data?.results[0].backdrop_path || '')}
           >
             <Title>{data?.results[0].title}</Title>
             <Overview>{data?.results[0].overview}</Overview>
@@ -280,7 +284,7 @@ function Home() {
                 initial='hidden'
                 animate='visible'
                 exit='exit'
-                transition={{ type: "tween", duration: 1 }}
+                transition={{ type: 'tween', duration: 1 }}
                 key={index}
               >
                 {data?.results
@@ -288,14 +292,14 @@ function Home() {
                   .slice(offset * index, offset * index + offset)
                   .map((movie) => (
                     <Box
-                      layoutId={movie.id + ""}
+                      layoutId={movie.id + ''}
                       key={movie.id}
                       whileHover='hover'
                       initial='normal'
                       variants={boxVariants}
                       onClick={() => onBoxClicked(movie.id)}
-                      transition={{ type: "tween" }}
-                      bgPhoto={makeImagePath(movie.backdrop_path, "w500")}
+                      transition={{ type: 'tween' }}
+                      bgPhoto={makeImagePath(movie.backdrop_path, 'w500')}
                     >
                       <Info variants={infoVariants}>
                         <h4>{movie.title}</h4>
@@ -317,36 +321,38 @@ function Home() {
                         style={{
                           backgroundImage: `linear-gradient(to top, black, transparent), url(${makeImagePath(
                             clickedMovie.backdrop_path,
-                            "w500"
+                            'w500'
                           )})`,
                         }}
                       />
                       <img
-                        src={makeImagePath(clickedMovie.poster_path, "w500")}
+                        src={makeImagePath(clickedMovie.poster_path, 'w500')}
                         style={{
-                          position: "absolute",
-                          width: "250px",
-                          top: "50%",
-                          left: "15px",
-                          transform: "translateY(-50%)",
+                          position: 'absolute',
+                          width: '250px',
+                          top: '50%',
+                          left: '15px',
+                          transform: 'translateY(-50%)',
                           zIndex: 1,
                         }}
                       />
-                      <Container>{clickedMovie.release_date}</Container>
-                      <BigTitle>{clickedMovie.title}</BigTitle>
-                      <Rating>
-                        {genreData &&
-                          clickedMovie.genre_ids
-                            .map((id) =>
-                              genreData.genres.find(
-                                (genre: any) => genre.id === id
+                      <DetailContainer>
+                        <Container>{clickedMovie.release_date}</Container>
+                        <BigTitle>{clickedMovie.title}</BigTitle>
+                        <Rating>
+                          {genreData &&
+                            clickedMovie.genre_ids
+                              .map((id) =>
+                                genreData.genres.find(
+                                  (genre: any) => genre.id === id
+                                )
                               )
-                            )
-                            .map((genre) => genre?.name)
-                            .join(" · ")}
-                      </Rating>
-                      <BigOverview>{clickedMovie.overview}</BigOverview>
-                      <Rating>Rating: {clickedMovie.vote_average}</Rating>
+                              .map((genre) => genre?.name)
+                              .join(' · ')}
+                        </Rating>
+                        <BigOverview>{clickedMovie.overview}</BigOverview>
+                        <Rating>Rating: {clickedMovie.vote_average}</Rating>
+                      </DetailContainer>
                     </>
                   )}
                 </BigMovie>
