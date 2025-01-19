@@ -1,9 +1,9 @@
 // MovieModal.tsx
-import { motion, AnimatePresence } from "framer-motion";
-import { useNavigate, useMatch } from "react-router-dom";
-import styled from "styled-components";
-import { makeImagePath } from "../utils";
-import { IMovie } from "../Routes/Home";
+import { motion, AnimatePresence } from 'framer-motion';
+import { useNavigate, useMatch } from 'react-router-dom';
+import styled from 'styled-components';
+import { makeImagePath } from '../utils';
+import { IMovie } from '../Routes/Home';
 
 interface MovieModalProps {
   data: IMovie[];
@@ -58,15 +58,21 @@ const BigOverview = styled.p`
 
 const MovieModal = ({ data }: MovieModalProps) => {
   const navigate = useNavigate();
-  const bigMovieMatch = useMatch("/movies/:movieId");
+  const bigMovieMatch = useMatch('/movies/:movieId');
 
   const onOverlayClick = () => {
-    navigate("/");
+    console.log('onOverlayClick');
+    navigate('/');
+  };
+
+  const onMovieClick = (movieId: string) => {
+    console.log(';;;');
+    navigate(`/movies/${movieId}`);
   };
 
   const clickedMovie =
     bigMovieMatch?.params.movieId &&
-    data?.find((movie) => movie.id + "" === bigMovieMatch.params.movieId);
+    data?.find((movie) => movie.id + '' === bigMovieMatch.params.movieId);
 
   return (
     <AnimatePresence>
@@ -80,18 +86,18 @@ const MovieModal = ({ data }: MovieModalProps) => {
                   style={{
                     backgroundImage: `linear-gradient(to top, black, transparent), url(${makeImagePath(
                       clickedMovie.backdrop_path,
-                      "w500"
+                      'w500'
                     )})`,
                   }}
                 />
                 <img
-                  src={makeImagePath(clickedMovie.poster_path, "w500")}
+                  src={makeImagePath(clickedMovie.poster_path, 'w500')}
                   style={{
-                    position: "absolute",
-                    width: "250px",
-                    top: "50%",
-                    left: "15px",
-                    transform: "translateY(-50%)",
+                    position: 'absolute',
+                    width: '250px',
+                    top: '50%',
+                    left: '15px',
+                    transform: 'translateY(-50%)',
                     zIndex: 1,
                   }}
                 />

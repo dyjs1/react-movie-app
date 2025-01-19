@@ -1,7 +1,7 @@
-import { useQuery } from "react-query";
-import { getMovieDetail } from "../api";
-import { useParams } from "react-router-dom";
-import styled from "styled-components";
+import { useQuery } from 'react-query';
+import { getMovieDetail } from '../api';
+import { useParams } from 'react-router-dom';
+import styled from 'styled-components';
 
 interface IGenre {
   id: number;
@@ -58,10 +58,9 @@ function Detail() {
   const { id } = useParams<{ id: string }>();
 
   const { data, isLoading } = useQuery<IMovie>({
-    queryKey: ["detail", id],
+    queryKey: ['detail', id],
     queryFn: () => getMovieDetail(Number(id)),
   });
-  console.log(data);
   if (isLoading) return <Loading>Loading...</Loading>;
 
   if (!data) return <NoData>No data found.</NoData>;
@@ -83,11 +82,11 @@ function Detail() {
         <Content>
           <Text level='medium'>평균 {data.vote_average.toFixed(1)}</Text>
           <Text>·</Text>
-          <Text>{data.release_date.split("-")[0]}</Text>
+          <Text>{data.release_date.split('-')[0]}</Text>
           <Text>·</Text>
           <Text>{data.runtime}분</Text>
           <Text>·</Text>
-          <Text>{data.genres.map((genre) => genre.name).join(" · ")}</Text>
+          <Text>{data.genres.map((genre) => genre.name).join(' · ')}</Text>
         </Content>
       </div>
       <ContentConatiner>
@@ -108,7 +107,7 @@ function Detail() {
             <Overview>{data.overview}</Overview>
             <ReleaseDate>Release Date: {data.release_date}</ReleaseDate>
             <Genres>
-              Genres: {data.genres.map((genre) => genre.name).join(", ")}
+              Genres: {data.genres.map((genre) => genre.name).join(', ')}
             </Genres>
             <VoteAverage>Rating: {data.vote_average}/10</VoteAverage>
           </Details>
@@ -211,13 +210,13 @@ const VideoContainer = styled.div`
   margin-top: 20px;
 `;
 interface TextProps {
-  level?: "high" | "medium" | "low"; // level은 선택적 속성
+  level?: 'high' | 'medium' | 'low'; // level은 선택적 속성
 }
 const Text = styled.h1<TextProps>`
   font-weight: ${(props) => {
-    if (props.level === "high") return "900";
-    if (props.level === "medium") return "600";
-    return "400";
+    if (props.level === 'high') return '900';
+    if (props.level === 'medium') return '600';
+    return '400';
   }};
   font-size: 1rem;
   color: #fff;

@@ -1,9 +1,9 @@
-import { useLocation, useNavigate, useSearchParams } from "react-router-dom";
-import { getMovie } from "../api";
-import { useQuery } from "react-query";
-import styled from "styled-components"; // styled-components 임포트
-import { motion, AnimatePresence } from "framer-motion";
-import MovieModal from "../Components/MovieModal";
+import { useLocation, useNavigate, useSearchParams } from 'react-router-dom';
+import { getMovie } from '../api';
+import { useQuery } from 'react-query';
+import styled from 'styled-components'; // styled-components 임포트
+import { motion, AnimatePresence } from 'framer-motion';
+import MovieModal from '../Components/MovieModal';
 
 const SearchContainer = styled.div`
   display: flex;
@@ -53,7 +53,7 @@ const boxVariants = {
     transition: {
       delay: 0.3,
       duaration: 0.9,
-      type: "tween",
+      type: 'tween',
     },
   },
 };
@@ -61,10 +61,10 @@ const boxVariants = {
 function Search() {
   const navigate = useNavigate();
   const [searchParams, _] = useSearchParams();
-  const keyword = searchParams.get("keyword") || "";
+  const keyword = searchParams.get('keyword') || '';
 
   const { data, isLoading } = useQuery({
-    queryKey: ["movie", keyword],
+    queryKey: ['movie', keyword],
     queryFn: () => getMovie(keyword),
   });
 
@@ -72,7 +72,7 @@ function Search() {
     return <h1>Loading...</h1>;
   }
   // 클릭 함수 핸들러
-  const onBoxClicked = (movieId: number) => {
+  const onBoxClick = (movieId: number) => {
     navigate(`/detail/${movieId}`);
   };
   return (
@@ -84,11 +84,11 @@ function Search() {
         <MoviesGrid>
           {data?.results.map((movie: any) => (
             <MovieBox
-              layoutId={movie.id + ""}
-              whileHover="hover"
-              initial="normal"
+              layoutId={movie.id + ''}
+              whileHover='hover'
+              initial='normal'
               key={movie.id}
-              onClick={() => onBoxClicked(movie.id)}
+              onClick={() => onBoxClick(movie.id)}
               variants={boxVariants}
             >
               <MovieImage
@@ -98,7 +98,6 @@ function Search() {
           ))}
         </MoviesGrid>
       </AnimatePresence>
-      <MovieModal data={data?.results || []} />
     </SearchContainer>
   );
 }

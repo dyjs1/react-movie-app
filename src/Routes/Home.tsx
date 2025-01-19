@@ -168,7 +168,6 @@ const BigCover = styled.div`
   height: 400px;
 `;
 const BigText = styled.div`
-  margin-left: 280px;
   padding: 20px;
   position: relative;
   top: -80px;
@@ -199,9 +198,10 @@ const BigOverview = styled(BigText).attrs({ as: 'p' })`
 
 const DetailContainer = styled.div`
   padding-right: 20px;
+  margin-left: 280px;
 `;
 
-const Container = styled.div`
+const DateContainer = styled.div`
   display: flex;
   justify-content: flex-end;
 `;
@@ -213,6 +213,36 @@ const Rating = styled.div`
   top: -80px;
   color: ${(props) => props.theme.white.lighter};
 `;
+
+const GoToContainer = styled.div`
+  display: flex;
+  justify-content: space-between;
+`;
+
+const GoToButton = styled.button`
+  background-color: #000;
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  padding: 10px 20px;
+  font-size: 16px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.3s ease;
+
+  &:hover {
+    border: 2px solid #fff;
+    background-color: #222;
+    transform: scale(1.05);
+  }
+
+  &:focus {
+    outline: none;
+    // White glow effect
+    box-shadow: 0 0 10px rgba(255, 255, 255, 0.7);
+  }
+`;
+
 const offset = 6;
 
 function Home() {
@@ -234,7 +264,6 @@ function Home() {
     queryKey: ['movies', 'genres'],
     queryFn: getGenres,
   });
-  console.log(data);
   // 슬라이더 증가 함수
   const incraseIndex = () => {
     if (data) {
@@ -258,12 +287,15 @@ function Home() {
     navigate('/');
   };
 
+  const onGoToClick = (movieId: number) => {
+    navigate(`/detail/${movieId}`);
+  };
+
   const clickedMovie =
     bigMovieMatch?.params.movieId &&
     data?.results.find(
       (movie) => movie.id + '' === bigMovieMatch.params.movieId
     );
-
   return (
     <Wrapper>
       {isLoading ? (
@@ -337,7 +369,9 @@ function Home() {
                         }}
                       />
                       <DetailContainer>
-                        <Container>{clickedMovie.release_date}</Container>
+                        <DateContainer>
+                          {clickedMovie.release_date}
+                        </DateContainer>
                         <BigTitle>{clickedMovie.title}</BigTitle>
                         <Rating>
                           {genreData &&
@@ -352,6 +386,13 @@ function Home() {
                         </Rating>
                         <BigOverview>{clickedMovie.overview}</BigOverview>
                         <Rating>Rating: {clickedMovie.vote_average}</Rating>
+                        <GoToContainer>
+                          <GoToButton
+                            onClick={() => onGoToClick(clickedMovie.id)}
+                          >
+                            go to
+                          </GoToButton>
+                        </GoToContainer>
                       </DetailContainer>
                     </>
                   )}
